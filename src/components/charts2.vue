@@ -5,57 +5,60 @@
   * 作用：charts 此处打码
 --->
 <template lang="html">
-    <div id='charts' class="charts">
+    <div id='charts' class="">
+      <div>
+        <el-date-picker v-model="timeSlot" type="datetimerange" :picker-options="pickerOptions" range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期" align="right" @change="getMyTime" unlink-panels value-format="yyyy-MM-dd hh:mm:ss" ></el-date-picker>
+        <el-button type="primary" @click="searchType">搜索</el-button>
+        <el-button type="success" @click="showChart('pie')">饼状图</el-button>
+        <el-button type="success" @click="showChart('bar')" >柱状图</el-button>
+        <div class="mianBaoBox">
 
-      <el-date-picker v-model="timeSlot" type="datetimerange" :picker-options="pickerOptions" range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期" align="right" @change="getMyTime" unlink-panels value-format="yyyy-MM-dd hh:mm:ss" ></el-date-picker>
-      <el-button type="primary" @click="searchType">搜索</el-button>
-      <el-button type="success" @click="showChart('pie')">饼状图</el-button>
-      <el-button type="success" @click="showChart('bar')" >柱状图</el-button>
-      <div class="mianBaoBox">
-
-        <i class="fas fa-home"></i>
-        <ul class="mianBao">
-          <li v-if="chartOption.LX_level_1" :class="chartOption.link_level_1" @click="to_level_1">案件类型</li>
-          <li v-if="chartOption.LX_level_2" :class="chartOption.link_level_2" @click="to_level_2">案件性质</li>
-          <li v-if="chartOption.LX_level_3" :class="chartOption.link_level_3" @click="to_level_3">性质分类</li>
-          <li v-if="chartOption.LX_level_4" :class="chartOption.link_level_4">性质细类</li>
-        </ul>
-      </div>
-      <div class="chartOutBox">
-        <div class="chartOption" style=""  v-loading="chartOption.loading2">
-          <dl class="chartOption-dl"  :class="chartOption.level_1" >
-            <dt>案件类型</dt>
-            <dd class="chartOption-item" v-for="(item,index) in chartOption.resule_level_1"  @click="show2(item[0])">
-              <label class="chartOption-label">{{item[0]}}</label>
-              <div class="chartOption-content">{{item[1]}}</div>
-            </dd>
-          </dl>
-          <dl class="chartOption-dl chartOption-dl2" :class="chartOption.level_2" >
-            <dt>{{chartOption.level_2_title}}</dt>
-            <dd class="chartOption-item" v-for="(item,index) in chartOption.resule_level_2"  @click="show3(item[0])">
-              <label class="chartOption-label">{{item[0]}}</label>
-              <div class="chartOption-content">{{item[1]}}</div>
-            </dd>
-          </dl>
-          <dl class="chartOption-dl chartOption-dl2" :class="chartOption.level_3" >
-            <dt>{{chartOption.level_3_title}}</dt>
-            <dd class="chartOption-item" v-for="(item,index) in chartOption.resule_level_3"  @click="show4(item[0])">
-              <label class="chartOption-label">{{item[0]}}</label>
-              <div class="chartOption-content">{{item[1]}}</div>
-            </dd>
-          </dl>
-          <dl class="chartOption-dl chartOption-dl2" :class="chartOption.level_4" >
-            <dt>{{chartOption.level_4_title}}</dt>
-            <dd class="chartOption-item" v-for="(item,index) in chartOption.resule_level_4" >
-              <label class="chartOption-label">{{item[0]}}</label>
-              <div class="chartOption-content">{{item[1]}}</div>
-            </dd>
-          </dl>
+          <i class="fas fa-home"></i>
+          <ul class="mianBao">
+            <li v-if="chartOption.LX_level_1" :class="chartOption.link_level_1" @click="to_level_1">案件类型</li>
+            <li v-if="chartOption.LX_level_2" :class="chartOption.link_level_2" @click="to_level_2">案件性质</li>
+            <li v-if="chartOption.LX_level_3" :class="chartOption.link_level_3" @click="to_level_3">性质分类</li>
+            <li v-if="chartOption.LX_level_4" :class="chartOption.link_level_4">性质细类</li>
+          </ul>
         </div>
-        <div class="chartBox" id="chartBox"  style="height: 100%">
-          <div id="chartBar" ref="chartBar" :style="{ width: chartOption.boxWidth  + 'px', height: chartOption.boxHeight + 'px' }"   style="width: 100%; height: 100%;"  v-show="showBar"></div>
-          <div id="chartPie" ref="chartPie" :style="{ width: chartOption.boxWidth  + 'px', height: chartOption.boxHeight + 'px' }" v-show="showPie"></div>
-
+        <div class="chartOutBox" :style="{height: chartOption.boxHeight + 'px'}">
+          <div class="chartOption" style=""  v-loading="chartOption.loading2">
+            <dl class="chartOption-dl"  :class="chartOption.level_1" >
+              <dt>案件类型</dt>
+              <dd class="chartOption-item" v-for="(item,index) in chartOption.resule_level_1"  @click="show2(item[0])">
+                <label class="chartOption-label">{{item[0]}}</label>
+                <div class="chartOption-content">{{item[1]}}</div>
+              </dd>
+            </dl>
+            <dl class="chartOption-dl chartOption-dl2" :class="chartOption.level_2" >
+              <dt>{{chartOption.level_2_title}}</dt>
+              <dd class="chartOption-item" v-for="(item,index) in chartOption.resule_level_2"  @click="show3(item[0])">
+                <label class="chartOption-label">{{item[0]}}</label>
+                <div class="chartOption-content">{{item[1]}}</div>
+              </dd>
+            </dl>
+            <dl class="chartOption-dl chartOption-dl2" :class="chartOption.level_3" >
+              <dt>{{chartOption.level_3_title}}</dt>
+              <dd class="chartOption-item" v-for="(item,index) in chartOption.resule_level_3"  @click="show4(item[0])">
+                <label class="chartOption-label">{{item[0]}}</label>
+                <div class="chartOption-content">{{item[1]}}</div>
+              </dd>
+            </dl>
+            <dl class="chartOption-dl chartOption-dl2" :class="chartOption.level_4" >
+              <dt>{{chartOption.level_4_title}}</dt>
+              <dd class="chartOption-item" v-for="(item,index) in chartOption.resule_level_4" >
+                <label class="chartOption-label">{{item[0]}}</label>
+                <div class="chartOption-content">{{item[1]}}</div>
+              </dd>
+            </dl>
+          </div>
+          <div class="chartBox" :style="{ width: chartOption.boxWidth  + 'px', height: chartOption.boxHeight + 'px' }">
+            <div id="chartBar" :style="{ width: chartOption.boxWidth  + 'px', height: chartOption.boxHeight + 'px' }"  v-show="showBar"></div>
+            <div id="chartPie" :style="{ width: chartOption.boxWidth  + 'px', height: chartOption.boxHeight + 'px' }" v-show="showPie"></div>
+<!--
+            <div id="chartBar"  :class="{barShow:barShow}"></div>
+            <div id="chartPie"  :class="{pieShow:pieShow}"></div>-->
+          </div>
         </div>
       </div>
     </div>
@@ -158,22 +161,8 @@
 		},
 		//这个是钩子函数
 		mounted: function () {
-      this.init();
 
-
-      window.addEventListener("resize", function () {
-
-        self.barBox.resize();
-        self.pieBox.resize();
-
-      });
-
-
-
-
-
-
-
+      const self = this;
 
 /*
       const end = new Date();
@@ -184,110 +173,27 @@
       this.USearch.bjsjStart = start;
       this.USearch.bjsjEnd = end;*/
 
-/*
       window.screenWidth = document.body.clientWidth;
       window.screenHeight = document.body.clientHeight;
       self.screenWidth = window.screenWidth;
       self.screenHeight = window.screenHeight;
       self.chartOption.boxWidth = self.screenWidth -460;
       self.chartOption.boxHeight = self.screenHeight  - 180;
-*/
 
 
 
-/*
       window.onresize = () => {
         return (() => {
-/!*
-
           window.screenWidth = document.body.clientWidth;
           window.screenHeight = document.body.clientHeight;
           self.screenWidth = window.screenWidth;
-          self.screenHeight = window.screenHeight;*!/
-          self.chartOption.boxWidth = document.getElementById("chartBox").clientWidth;
-          self.chartOption.boxHeight = document.getElementById("chartBox").clientHeight;
-          console.log(self.chartOption.boxWidth,self.chartOption.boxHeight);
-          self.barBox.resize();
-          self.pieBox.resize();
+          self.screenHeight = window.screenHeight;
 
-/!**!/
         })()
-      }*/
+      }
 		},
 		//这个是要执行的函数
 		methods: {
-			init(){
-
-        const self = this;
-/*
-        self.chartOption.boxWidth = document.getElementById("chartBox").clientWidth;
-        self.chartOption.boxHeight = document.getElementById("chartBox").clientHeight;
-*/
-
-
-        window.screenWidth = document.body.clientWidth;
-        window.screenHeight = document.body.clientHeight;
-        self.screenWidth = window.screenWidth;
-        self.screenHeight = window.screenHeight;
-
-        self.chartOption.boxWidth = self.screenWidth - 444;
-        self.chartOption.boxHeight = self.screenHeight - 180;
-
-
-        window.onresize = () => {
-          return (() => {
-            window.screenWidth = document.body.clientWidth;
-            window.screenHeight = document.body.clientHeight;
-            self.screenWidth = window.screenWidth;
-            self.screenHeight = window.screenHeight;
-
-          })()
-        }
-
-
-
-
-
-        /*
-        setTimeout(() => {
-            window.onresize = () => {
-              return (() => {
-
-                window.screenWidth = document.body.clientWidth;
-                window.screenHeight = document.body.clientHeight;
-                self.screenWidth = window.screenWidth;
-                self.screenHeight = window.screenHeight;
-
-                self.chartOption.boxWidth = self.screenWidth - 444;
-                self.chartOption.boxHeight = self.screenHeight - 180;
-
-                console.log(document.body.clientWidth,document.body.clientHeight);
-                console.log(self.chartOption.boxWidth,self.chartOption.boxHeight);
-                if(self.barBox  ||  self.pieBox){
-                  self.barBox.resize();
-                  self.pieBox.resize();
-                }
-              })()
-            }
-
-
-
-
-         /!* window.onresize = function () {
-            //self.$refs.echarts.resize()
-            self.chartOption.boxWidth = document.body.clientWidth - 44;
-            self.chartOption.boxHeight = document.body.clientHeight - 180;
-
-            console.log(document.body.clientWidth,document.body.clientHeight);
-            console.log(self.chartOption.boxWidth,self.chartOption.boxHeight);
-            if(self.barBox  ||  self.pieBox){
-              self.barBox.resize();
-              self.pieBox.resize();
-            }
-          }*!/
-        }, 20)*/
-
-      },
 
       to_level_1(){
         const self = this;
@@ -406,8 +312,8 @@
       //柱状图
       chartBar(title,result){
         const self = this;
-/*        self.chartOption.boxWidth = self.screenWidth -460;
-        self.chartOption.boxHeight = self.screenHeight  - 180;*/
+        self.chartOption.boxWidth = self.screenWidth -460;
+        self.chartOption.boxHeight = self.screenHeight  - 180;
 
         let myData = new Map(result);
         let arr = [...myData.keys()];
@@ -452,7 +358,6 @@
               data: arr2
             }]
           });
-
         }
       },
       //饼状图
@@ -704,35 +609,10 @@
       },
     },
     watch: {
-
       screenWidth (val) {
         if (!this.timer) {
           this.screenWidth = val;
           this.timer = true;
-          const self = this;
-          setTimeout(function () {
-
-/*            self.screenWidth = window.screenWidth;
-            self.screenHeight = window.screenHeight;*/
-            console.log(self.screenWidth, self.screenHeight );
-            self.chartOption.boxWidth = self.screenWidth -440;
-            self.timer = false;
-            self.$refs.chartBar.resize();
-            self.$refs.chartPie.resize()
-/*            self.barBox.resize();
-            self.pieBox.resize();*/
-          }, 400)
-        }
-      },
-//      self.screenHeight = window.screenHeight;
-
-
-
-/*
-      screenWidth (val) {
-        if (!this.timer) {
-          this.screenWidth = val
-          this.timer = true
           const self = this;
           setTimeout(function () {
             self.chartOption.boxWidth = window.screenWidth -460;
@@ -743,7 +623,7 @@
         }
       },
 //      self.screenHeight = window.screenHeight;
-  /!*    setTimeout(function () {
+  /*    setTimeout(function () {
         // self.screenWidth = self.$store.state.canvasWidth
         //self.init()
         self.chartOption.boxWidth = self.screenWidth -460;
@@ -752,12 +632,12 @@
         self.timer2 = false;
         self.barBox.resize();
         self.pieBox.resize();
-      }, 400)*!/
+      }, 400)*/
       screenHeight (val) {
         console.log(val);
         if (!this.timer2) {
-          this.screenHeight = val
-          this.timer2 = true
+          this.screenHeight = val;
+          this.timer2 = true;
           const self = this;
           setTimeout(function () {
             // self.screenWidth = self.$store.state.canvasWidth
@@ -770,7 +650,6 @@
           }, 400)
         }
       }
-*/
 
     }
 	}
@@ -780,13 +659,12 @@
   .pieShow{ display: none;}
 
 
-  .charts{height: 100%;}
 
   #chartBar{}
   #chartPie{}
-  .chartOutBox{display: flex;flex-wrap: nowrap; height: calc(100% - 80px); background: rgba(255,255,255,0.8);border: 1px solid rgba(0,0,0,.2);}
-  .chartOption{background:rgba(0,0,0,.0); width: 200px; position: relative; overflow: hidden;border-right: 1px solid rgba(0,0,0,.2);flex-grow: 0;}
-  .chartBox{flex-grow: 1;}
+  .chartOutBox{display: flex;flex-wrap: nowrap; background: rgba(255,255,255,0.8);border: 1px solid rgba(0,0,0,.2);}
+  .chartOption{background:rgba(0,0,0,.0); width: 200px; position: relative; overflow: hidden;border-right: 1px solid rgba(0,0,0,.2);}
+  .chartBox{flex-grow: 1;;}
   .chartOption-dl{ position: absolute; width: 200px;top: 0;transition: all .5s;}
   .chartOption-dl2{ left: 100%;}
   .chartOption-dl dt{text-align: center; border-bottom: 1px solid rgba(0,0,0,.2);}

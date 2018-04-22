@@ -12,10 +12,10 @@
           <el-date-picker v-model="timeSlot" type="datetimerange" :picker-options="pickerOptions" range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期" align="right" @change="getMyTime"  unlink-panels value-format="yyyy-MM-dd hh:mm:ss" ></el-date-picker>
         </el-form-item>
         <el-form-item label="报警电话">
-          <el-input v-model="USearch.bjdh" placeholder="" clearable></el-input>
+          <el-input v-model.trim="USearch.bjdh" placeholder="" clearable></el-input>
         </el-form-item>
         <el-form-item label="案发地址">
-          <el-input v-model="USearch.afdz" placeholder="" clearable></el-input>
+          <el-input v-model.trim="USearch.fadz" placeholder="" clearable></el-input>
         </el-form-item>
         <el-form-item label="案件类型">
           <el-select v-model="USearch.ajlx" placeholder="案件类型" @change="findajxz">
@@ -32,10 +32,10 @@
           </el-select>
         </el-form-item>
         <el-form-item label="接警摘要">
-          <el-input v-model="USearch.jjzy" placeholder="" clearable></el-input>
+          <el-input v-model.trim="USearch.jjzy" placeholder="" clearable></el-input>
         </el-form-item>
         <el-form-item label="接 警 员">
-          <el-input v-model="USearch.jjy" placeholder="" clearable></el-input>
+          <el-input v-model.trim="USearch.zby" placeholder="" clearable></el-input>
         </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="searchData">查询</el-button>
@@ -83,8 +83,6 @@
 
 
       </el-table>
-      http://39.104.113.229:8761/jcjb/findJcjbByJjh2Word/2018040506100000250
-      <button>导出</button>
       <div class="block noPrint" v-if="pageState">
         <el-pagination layout="total, sizes, prev, pager, next, jumper"  :total="total"  :page-size="pageSize" :current-page="currentPage" @current-change
           ="pageNow" @size-change="handleSizeChange">
@@ -162,7 +160,7 @@
 
         <div style="text-align: right; padding-top: 10px;">
           <el-button type="primary" @click="printNow"><i class="fas fa-print"></i>打印</el-button>
-          <a :href="wordDownload" download="别闹腾了好好过日子"><i class="far fa-file-word"></i>导出word</a>
+          <a :href="wordDownload" class="el-button el-button--primary" download="别闹腾了好好过日子"><i class="far fa-file-word"></i>导出word</a>
 
 
 
@@ -344,28 +342,19 @@
             title:"道道道",
             artist: '黄霑',
             src: "/static/music/daodaodao.mp3",
-            pic: 'https://moeplayer.b0.upaiyun.com/aplayer/yourname.jpg',
+            pic: '/static/music/mp3.jpg',
           },
           {
             title: '浮夸',
             artist: 'eason',
             src: "/static/music/fukua.mp3",
-            pic: 'https://moeplayer.b0.upaiyun.com/aplayer/hikarunara.jpg',
-            lrc: 'https://moeplayer.b0.upaiyun.com/aplayer/hikarunara.lrc',
+            pic: '/static/music/mp3.jpg',
           },
           {
             title: '好久不见',
             artist: 'eason',
             src: "/static/music/haojiubujian.mp3",
-            pic: 'https://moeplayer.b0.upaiyun.com/aplayer/snowmoonflowers.jpg',
-            lrc: 'https://moeplayer.b0.upaiyun.com/aplayer/snowmoonflowers.lrc'
-          },
-          {
-            title: 'あっちゅ～ま青春!',
-            artist: '七森中☆ごらく部',
-            src: 'https://moeplayer.b0.upaiyun.com/aplayer/yuruyuri.mp3',
-            pic: 'https://moeplayer.b0.upaiyun.com/aplayer/yuruyuri.jpg',
-            lrc: 'https://moeplayer.b0.upaiyun.com/aplayer/yuruyuri.lrc',
+            pic: '/static/music/mp3.jpg',
           }
         ],
         wordDownload:""
@@ -396,13 +385,12 @@
         const self = this;
         //console.log(self.USearch);
         self.loading = true;
+        console.log(self.pageSize,self.USearch);
         self.$http.post('http://39.104.113.229:8761/jcjb/findPagerByJcjb/'+ self.currentPage + "/" + self.pageSize,self.USearch).then((response) => {
           console.log('success');
           var result =response.body;
-          console.log(result);
           self.searchResult =[];
           self.searchResult = result.content;
-          console.log(self.searchResult);
           self.total = result.totalElements;
           self.totalPages = result.totalPages;
           self.currentPage =result.number;
@@ -499,7 +487,6 @@
 
         self.$http.get('http://39.104.113.229:8761/jcjb/findJcjbByJjh2Word/'+self.detailed.jjh).then((response) => {
           console.log('success');
-          console.log(response.body);
           self.wordDownload=response.body;
 
           //window.open(response.body)
@@ -513,7 +500,7 @@
       },
       //编辑
       handleEdit(index, row) {
-        console.log(index, row);
+        //console.log(index, row);
         const self = this;
 /*        self.detailed=[];
         self.detailed.push(row);*/
@@ -624,25 +611,7 @@
         //alert("212")
         //self.$refs.printNow.style.width = "794";
         //createPdf();
-        let newWindow = window.open("_blank");   //打开新窗口/element-ui/lib/theme-chalk/index.css
-/*        var head = newWindow.document.getElementsByTagName('head')[0];
-        var link = newWindow.document.createElement('link');
-        link.href = '/static/css/style.css';
-        link.rel = 'stylesheet';
-        link.type = 'text/css';
-        var link2 = newWindow.document.createElement('link');
-        link2.href = '/node_modules/_element-ui@2.3.3@element-ui/lib/theme-chalk/index.css';
-        link2.rel = 'stylesheet';
-        link2.type = 'text/css';
-        console.log(link);
-        //c.log()
-        head.appendChild(link);
-        head.appendChild(link2);
-
-        var script = document.createElement('script');
-        script.src = '/node_modules/_element-ui@2.3.3@element-ui/lib/index.js';
-        script.type = 'text/javascript';
-        head.appendChild(script);*/
+        let newWindow = window.open("_blank");
         let cssText='.el-row{font-size:0;margin:10px!important}.el-col-lg-12{display:inline-block;font-size:14px;width:50%;box-sizing:border-box;line-height:32px;border:1px solid rgba(0,0,0,0.5);margin-top:-1px;margin-left:-1px}.el-col-lg-24{font-size:14px;box-sizing:border-box;line-height:32px;display:block;border:1px solid rgba(0,0,0,0.5);margin-top:-1px;margin-left:-1px;margin-right: 2px;}.el-form-item{margin-bottom:0}.el-form-item__content{display:inline-block;font-weight:bold;padding-left:5px}.el-form-item__label{display:inline-block;color:rgba(0,0,0,0.7);margin-left:-10px;padding-right:5px;padding-left:5px;border-right:1px solid rgba(0,0,0,0.5)}.el-dialog .el-col{border:1px solid rgba(231,235,238,1);margin-top:-2px;margin-left:-1px;padding:0}.bigHight .el-form-item__label{line-height:100px;height:100px}.bigHight .el-form-item__content{letter-spacing:normal;width:calc(100% - 120px);line-height:22px}';
         var head = newWindow.document.getElementsByTagName('head')[0]; //获取head元素
         var style = document.createElement('style'); //创建一个style元素

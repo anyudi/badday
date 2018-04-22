@@ -20,7 +20,7 @@
 		props: {},
 		data(){
 			return {
-				logo:"这个是项目名称",
+				logo:"警情在线分析处理",
       }
 		},
 		//这个是钩子函数
@@ -33,8 +33,9 @@
 </script>
 
 <style lang="css" scoped>
-  .myHeader{ text-align:left}
-  .logo{ display: inline-block;  font-size: 36px; font-weight: bold; line-height: 60px;}
+  .myHeader{ text-align:left; box-sizing: border-box;}
+  .logo{ display: inline-block;  font-size: 28px; font-weight: bold; background: url("../assets/images/logo.png") left center no-repeat;  background-size: 50px 50px;}
+  .logo a{ color: #FFF; line-height: 60px; display: inline-block;  padding-left: 70px;}
   .topMunu{ margin:0;  padding: 0; display: inline-block; float:right;}
   .topMunu li{ padding: 5px; margin: 3px; display: inline-block;}
 </style>

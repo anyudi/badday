@@ -45,7 +45,7 @@ background:rgba(246,247,249,1)
 
 .el-container.is-vertical{padding-top: 60px; }
 .el-container{ height:100%; box-sizing: border-box;background:rgba(246,247,249,1); }
-header.el-header{ position: fixed; left:0px; top:0; height: 60px; background: rgba(26,152,225,1); width: 100%; box-sizing: border-box;}
+header.el-header{ position: fixed; left:0px; top:0; height: 60px; background: rgba(0,58,91,1); width: 100%; box-sizing: border-box; }
 main.el-main{margin:0 ; padding: 0;padding: 20px;}
 footer{ position: fixed; left:0px; bottom:0; height: 60px; background:rgba(26,152,225,1); width: 100%; box-sizing: border-box;}
 
@@ -117,6 +117,7 @@ div.el-dialog{ box-shadow: 0px 3px 10px rgba(0,0,0,0.8);}
 .bigHight .el-form-item__content{ letter-spacing: normal; width: calc(100% - 120px); line-height: 26px;}
 
 
+.el-button--primary i{ margin-right: 5px;}
 /*******   打印    ********/
 @media print {
   *{overflow: hidden;}
