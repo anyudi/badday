@@ -76,7 +76,8 @@
           bjsjStart:'',
           bjsjEnd:'',
         },
-        timeSlot:[],//日期
+        //日期
+        timeSlot:[],//,
         pickerOptions:{
           //快捷选择日期段
           shortcuts:[
@@ -154,6 +155,10 @@
         barBox:null,
         pieBox:null,
         pieBox2:null,
+
+        asdfasdf:0,
+
+
       }
 		},
 		//这个是钩子函数
@@ -181,53 +186,6 @@
           })()
         }
       },
-      searchType(){
-        const self = this;
-        self.chartOption.loading2=true;
-        //ajlx  ajxz xzfl xzxl
-        delete self.USearch.ajlx;
-        delete self.USearch.ajxz;
-        delete self.USearch.xzfl;
-        self.barBox = null;
-        self.pieBox = null;
-        /*self.chartOption.boxWidth =  document.getElementById("chartBar").offsetWidth;
-         self.chartOption.boxHeight =  document.getElementById("chartBar").offsetHeight;*/
-        self.$http.post('http://39.104.113.229:8761/count/findJcjbCountByCol/ajlx/',self.USearch).then((response) => {
-          console.log('success');
-          var result =response.body;
-          self.chartOption.resule_level_1=[];
-          self.chartOption.resule_level_2=[];
-          self.chartOption.resule_level_3=[];
-          self.chartOption.resule_level_4=[];
-          self.chartOption.level_1="left-in";
-          self.chartOption.level_2="";
-          self.chartOption.level_3="";
-          self.chartOption.level_4="";
-          self.chartOption.level_2_title="";
-          self.chartOption.level_3_title="";
-          self.chartOption.level_4_title="";
-          
-          self.chartOption.link_level_1="";
-          self.chartOption.LX_level_2=false;
-          self.chartOption.link_level_2="";
-          self.chartOption.LX_level_3=false;
-          self.chartOption.link_level_3="";
-          self.chartOption.LX_level_4=false;
-          self.chartOption.resule_level_1 = result;
-          
-          self.searchResult.chart_title = self.chartOption.level_1_title;
-          self.searchResult.chart_result = [];
-          self.searchResult.chart_result = self.chartOption.resule_level_1;
-          self.loadChart(self.searchResult.chart_title,self.searchResult.chart_result);
-          /*          self.chartBar(self.chartOption.level_1_title,self.chartOption.resule_level_1);
-           self.chartPie(self.chartOption.level_1_title,self.chartOption.resule_level_1);*/
-          
-          
-          self.chartOption.loading2=false;
-        }, (response) => {
-          console.log('error');
-        });
-      },
       to_level_1(){
         const self = this;
         //self.chartOption.resule_level_1=[];
@@ -250,7 +208,9 @@
         self.searchResult.chart_title = self.chartOption.level_1_title;
         self.searchResult.chart_result = [];
         self.searchResult.chart_result = self.chartOption.resule_level_1;
-        self.loadChart(self.searchResult.chart_title,self.searchResult.chart_result);
+        self.chartBar(self.searchResult.chart_title,self.searchResult.chart_result);
+        self.chartPie(self.searchResult.chart_title,self.searchResult.chart_result);
+        self.chartPie2(self.searchResult.chart_title,self.searchResult.chart_result);
 
       },
       to_level_2(){
@@ -279,7 +239,9 @@
         self.searchResult.chart_title = self.chartOption.level_2_title;
         self.searchResult.chart_result = [];
         self.searchResult.chart_result = self.chartOption.resule_level_2;
-        self.loadChart(self.searchResult.chart_title,self.searchResult.chart_result);
+        self.chartBar(self.searchResult.chart_title,self.searchResult.chart_result);
+        self.chartPie(self.searchResult.chart_title,self.searchResult.chart_result);
+        self.chartPie2(self.searchResult.chart_title,self.searchResult.chart_result);
       },
       to_level_3(){
         const self = this;
@@ -306,7 +268,9 @@
         self.searchResult.chart_title = self.chartOption.level_3_title;
         self.searchResult.chart_result = [];
         self.searchResult.chart_result = self.chartOption.resule_level_3;
-        self.loadChart(self.searchResult.chart_title,self.searchResult.chart_result);
+        self.chartBar(self.searchResult.chart_title,self.searchResult.chart_result);
+        self.chartPie(self.searchResult.chart_title,self.searchResult.chart_result);
+        self.chartPie2(self.searchResult.chart_title,self.searchResult.chart_result);
       },
 			//案件类型
       ajlxTJ(){
@@ -338,20 +302,12 @@
         }
         return moment(date).format("YYYY-MM-DD HH:mm:ss");
       },
-      //加载图表
-      loadChart(title,result){
+      //柱状图
+      chartBar(title,result){
         const self = this;
         let myData = new Map(result);
         let arr = [...myData.keys()];
         let arr2 = [...myData.values()];
-        let pieData=[];
-        for(var i = 0; i < arr.length; i++){
-          pieData.push({
-            name: arr[i],
-            value: arr2[i]
-          });
-        };
-        //柱状图
         if(!self.barBox){
           self.barBox = echarts.init(document.getElementById('chartBar'));
           var option_bar = {
@@ -366,9 +322,9 @@
                 type: 'shadow'
               }
             },
-      
+
             grid: {
-              top:'20%',
+            	top:'20%',
               left: '3%',
               right: '4%',
               bottom: '3%',
@@ -411,8 +367,22 @@
               data: arr2
             }]
           });
-        };
-        //饼状图
+
+        }
+      },
+      //饼状图
+      chartPie(title,result){
+        const self = this;
+        let myData = new Map(result);
+        let arr = [...myData.keys()];
+        let arr2 = [...myData.values()];
+        let pieData=[];
+        for(var i = 0; i < arr.length; i++){
+          pieData.push({
+            name: arr[i],
+            value: arr2[i]
+          });
+        }
         if(!self.pieBox){
           self.pieBox = echarts.init(document.getElementById('chartPie'));
           var option_pie = {
@@ -427,11 +397,11 @@
             legend: {
               orient: 'vertical',
               left: 'left',
-              data: arr,
+              data: arr
             },
             series : [
               {
-                name:title,
+              	name:title,
                 type: 'pie',
                 radius : '55%',
                 center: ['50%', '60%'],
@@ -443,8 +413,7 @@
                     shadowOffsetX: 0,
                     shadowColor: 'rgba(0, 0, 0, 0.5)'
                   }
-                },
-                label: {fontSize:14},
+                }
               }
             ]
           };
@@ -454,7 +423,7 @@
             title : {
               text: self.searchResult.chart_title,
             },
-      
+
             legend: {
               orient: 'vertical',
               left: 'left',
@@ -466,7 +435,22 @@
             }]
           });
         }
-        //非对称饼图
+      },
+      //非对称饼状图
+      chartPie2(title,result){
+
+        console.log(1111);
+        const self = this;
+        let myData = new Map(result);
+        let arr = [...myData.keys()];
+        let arr2 = [...myData.values()];
+        let pieData=[];
+        for(var i = 0; i < arr.length; i++){
+          pieData.push({
+            name: arr[i],
+            value: arr2[i]
+          });
+        }
         if(!self.pieBox2){
           self.pieBox2 = echarts.init(document.getElementById('chartPie2'));
           let option_pie = {
@@ -509,11 +493,13 @@
           };
           this.pieBox2.setOption(option_pie,true);
         }else{
+
+          console.log(2222);
           self.pieBox2.setOption({
             title : {
               text: self.searchResult.chart_title,
             },
-      
+
             legend: {
               orient: 'vertical',
               left: 'left',
@@ -532,7 +518,9 @@
           });
         }
       },
-      
+
+
+
       showChart(val){
         const self = this;
         if(val == "bar"){
@@ -555,6 +543,56 @@
 
         }
 
+      },
+      searchType(){
+        const self = this;
+        self.chartOption.loading2=true;
+        //ajlx  ajxz xzfl xzxl
+        delete self.USearch.ajlx;
+        delete self.USearch.ajxz;
+        delete self.USearch.xzfl;
+        self.barBox = null;
+        self.pieBox = null;
+        self.chartOption.boxWidth =  document.getElementById("chartBar").offsetWidth;
+        self.chartOption.boxHeight =  document.getElementById("chartBar").offsetHeight;
+        self.$http.post('http://39.104.113.229:8761/count/findJcjbCountByCol/ajlx/',self.USearch).then((response) => {
+          console.log('success');
+          var result =response.body;
+          self.chartOption.resule_level_1=[];
+          self.chartOption.resule_level_2=[];
+          self.chartOption.resule_level_3=[];
+          self.chartOption.resule_level_4=[];
+          self.chartOption.level_1="left-in";
+          self.chartOption.level_2="";
+          self.chartOption.level_3="";
+          self.chartOption.level_4="";
+          self.chartOption.level_2_title="";
+          self.chartOption.level_3_title="";
+          self.chartOption.level_4_title="";
+
+          self.chartOption.link_level_1="";
+          self.chartOption.LX_level_2=false;
+          self.chartOption.link_level_2="";
+          self.chartOption.LX_level_3=false;
+          self.chartOption.link_level_3="";
+          self.chartOption.LX_level_4=false;
+          self.chartOption.resule_level_1 = result;
+
+          self.searchResult.chart_title = self.chartOption.level_1_title;
+          self.searchResult.chart_result = [];
+          self.searchResult.chart_result = self.chartOption.resule_level_1;
+          self.chartBar(self.searchResult.chart_title,self.searchResult.chart_result);
+          self.chartPie(self.searchResult.chart_title,self.searchResult.chart_result);
+          self.chartPie2(self.searchResult.chart_title,self.searchResult.chart_result);
+
+/*          self.chartBar(self.chartOption.level_1_title,self.chartOption.resule_level_1);
+          self.chartPie(self.chartOption.level_1_title,self.chartOption.resule_level_1);*/
+
+
+          self.chartOption.loading2=false;
+        }, (response) => {
+          console.log('error');
+        });
       },
       //2222
       show2(val){
@@ -591,7 +629,9 @@
             self.searchResult.chart_title = self.chartOption.level_2_title;
             self.searchResult.chart_result = [];
             self.searchResult.chart_result = self.chartOption.resule_level_2;
-            self.loadChart(self.searchResult.chart_title,self.searchResult.chart_result)
+            self.chartBar(self.searchResult.chart_title,self.searchResult.chart_result);
+            self.chartPie(self.searchResult.chart_title,self.searchResult.chart_result);
+            self.chartPie2(self.searchResult.chart_title,self.searchResult.chart_result);
           }
           self.chartOption.loading2=false;
         }, (response) => {
@@ -633,7 +673,9 @@
             self.searchResult.chart_title = self.chartOption.level_3_title;
             self.searchResult.chart_result = [];
             self.searchResult.chart_result = self.chartOption.resule_level_3;
-            self.loadChart(self.searchResult.chart_title,self.searchResult.chart_result);
+            self.chartBar(self.searchResult.chart_title,self.searchResult.chart_result);
+            self.chartPie(self.searchResult.chart_title,self.searchResult.chart_result);
+            self.chartPie2(self.searchResult.chart_title,self.searchResult.chart_result);
 
           }
 
@@ -676,7 +718,9 @@
             self.searchResult.chart_title = self.chartOption.level_4_title;
             self.searchResult.chart_result = [];
             self.searchResult.chart_result = self.chartOption.resule_level_4;
-            self.loadChart(self.searchResult.chart_title,self.searchResult.chart_result);
+            self.chartBar(self.searchResult.chart_title,self.searchResult.chart_result);
+            self.chartPie(self.searchResult.chart_title,self.searchResult.chart_result);
+            self.chartPie2(self.searchResult.chart_title,self.searchResult.chart_result);
           }
 
           self.chartOption.loading2=false;

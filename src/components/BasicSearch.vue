@@ -68,15 +68,6 @@
             <el-tooltip class="item" effect="dark" content="修改记录" placement="top">
               <el-button class="bigICO" size="mini" @click="handleEdit(scope.$index, scope.row)"><i class="fa fa-edit" aria-hidden="true"></i></el-button>
             </el-tooltip>
-<!--
-
-            <el-button
-              size="mini"
-              @click="handleEdit(scope.$index, scope.row)"></el-button>
-            <el-button
-              size="mini"
-              type="danger"
-              @click="handleDelete(scope.$index, scope.row)"></el-button>-->
           </template>
         </el-table-column>
 
@@ -385,12 +376,12 @@
         const self = this;
         //console.log(self.USearch);
         self.loading = true;
-        console.log(self.pageSize,self.USearch);
         self.$http.post('http://39.104.113.229:8761/jcjb/findPagerByJcjb/'+ self.currentPage + "/" + self.pageSize,self.USearch).then((response) => {
           console.log('success');
           var result =response.body;
           self.searchResult =[];
           self.searchResult = result.content;
+          console.log(self.searchResult)
           self.total = result.totalElements;
           self.totalPages = result.totalPages;
           self.currentPage =result.number;

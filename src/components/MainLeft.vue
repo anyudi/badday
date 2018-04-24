@@ -22,14 +22,14 @@
 			return {
         menus:[
           {title:'基本查询',iClass:"fas fa-search",pathTo:'BasicSearch',guess:true},
+          {title:'日历统计',iClass:"far fa-hand-peace",pathTo:'typeSearch',guess:false},
           {title:'图表',iClass:'fas fa-chart-pie',pathTo:'charts',guess:false},
-          {title:'动态警情对比',iClass:"far fa-hand-peace",pathTo:'',guess:false},
+          {title:'动态警情对比',iClass:"far fa-hand-peace",pathTo:'typeSearch',guess:false},
           {title:'动态警情对比',iClass:"far fa-hand-peace",pathTo:'',guess:false},
           {title:'每日治安动态',iClass:"far fa-hand-peace",pathTo:'',guess:false},
           {title:'智能预警',iClass:"far fa-hand-peace",pathTo:'',guess:false},
           {title:'系统维护',iClass:"far fa-hand-peace",pathTo:'',guess:false},
-
-
+          
 
 
         ],
