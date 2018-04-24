@@ -9,8 +9,9 @@
 
       <el-date-picker v-model="timeSlot" type="datetimerange" :picker-options="pickerOptions" range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期" align="right" @change="getMyTime" unlink-panels value-format="yyyy-MM-dd hh:mm:ss" ></el-date-picker>
       <el-button type="primary" @click="searchType">搜索</el-button>
-      <el-button type="success" @click="showChart('pie')">饼状图</el-button>
       <el-button type="success" @click="showChart('bar')" >柱状图</el-button>
+      <el-button type="success" @click="showChart('pie')">饼状图</el-button>
+      <el-button type="success" @click="showChart('noPie')">非对称饼状图</el-button>
       <div class="mianBaoBox">
 
         <i class="fas fa-home"></i>
@@ -21,8 +22,8 @@
           <li v-if="chartOption.LX_level_4" :class="chartOption.link_level_4">性质细类</li>
         </ul>
       </div>
-      <div class="chartOutBox">
-        <div class="chartOption" style=""  v-loading="chartOption.loading2">
+      <div class="chartOutBox" id="chartOutBox">
+        <div class="chartOption" v-loading="chartOption.loading2">
           <dl class="chartOption-dl"  :class="chartOption.level_1" >
             <dt>案件类型</dt>
             <dd class="chartOption-item" v-for="(item,index) in chartOption.resule_level_1"  @click="show2(item[0])">
@@ -52,10 +53,10 @@
             </dd>
           </dl>
         </div>
-        <div class="chartBox" id="chartBox"  style="height: 100%">
-          <div id="chartBar" ref="chartBar" :style="{ width: chartOption.boxWidth  + 'px', height: chartOption.boxHeight + 'px' }"   style="width: 100%; height: 100%;"  v-show="showBar"></div>
-          <div id="chartPie" ref="chartPie" :style="{ width: chartOption.boxWidth  + 'px', height: chartOption.boxHeight + 'px' }" v-show="showPie"></div>
-
+        <div class="chartBox" id="chartBox">
+          <div class="chartBL" id="chartBar" :style="{zIndex:chartOption.barZindex}"></div>
+          <div class="chartBL" id="chartPie" :style="{zIndex:chartOption.pieZindex}"></div>
+          <div class="chartBL" id="chartPie2" :style="{zIndex:chartOption.pie2Zindex}"></div>
         </div>
       </div>
     </div>
@@ -122,6 +123,9 @@
           chartBarHeight:0,
           boxWidth:0,
           boxHeight:0,
+          barZindex:1,
+          pieZindex:0,
+          pie2Zindex:0,
           level_1:"file-in",
           level_2:"",
           level_3:"",
@@ -150,6 +154,7 @@
         pieShow:true,
         barBox:null,
         pieBox:null,
+        pieBox2:null,
 
         asdfasdf:0,
 
@@ -160,135 +165,27 @@
 		mounted: function () {
       this.init();
 
-
-      window.addEventListener("resize", function () {
-
-        self.barBox.resize();
-        self.pieBox.resize();
-
-      });
-
-
-
-
-
-
-
-
-/*
-      const end = new Date();
-      const start = new Date();
-      start.setTime(start.getTime() - 3600*1000*24*7);
-      self.timeSlot = [start,end];
-
-      this.USearch.bjsjStart = start;
-      this.USearch.bjsjEnd = end;*/
-
-/*
-      window.screenWidth = document.body.clientWidth;
-      window.screenHeight = document.body.clientHeight;
-      self.screenWidth = window.screenWidth;
-      self.screenHeight = window.screenHeight;
-      self.chartOption.boxWidth = self.screenWidth -460;
-      self.chartOption.boxHeight = self.screenHeight  - 180;
-*/
-
-
-
-/*
-      window.onresize = () => {
-        return (() => {
-/!*
-
-          window.screenWidth = document.body.clientWidth;
-          window.screenHeight = document.body.clientHeight;
-          self.screenWidth = window.screenWidth;
-          self.screenHeight = window.screenHeight;*!/
-          self.chartOption.boxWidth = document.getElementById("chartBox").clientWidth;
-          self.chartOption.boxHeight = document.getElementById("chartBox").clientHeight;
-          console.log(self.chartOption.boxWidth,self.chartOption.boxHeight);
-          self.barBox.resize();
-          self.pieBox.resize();
-
-/!**!/
-        })()
-      }*/
 		},
 		//这个是要执行的函数
 		methods: {
 			init(){
-
         const self = this;
-/*
-        self.chartOption.boxWidth = document.getElementById("chartBox").clientWidth;
-        self.chartOption.boxHeight = document.getElementById("chartBox").clientHeight;
-*/
-
-
-        window.screenWidth = document.body.clientWidth;
-        window.screenHeight = document.body.clientHeight;
-        self.screenWidth = window.screenWidth;
-        self.screenHeight = window.screenHeight;
-
-        self.chartOption.boxWidth = self.screenWidth - 444;
-        self.chartOption.boxHeight = self.screenHeight - 180;
-
-
+        let aaa = document.getElementById('chartOutBox').offsetWidth;
+        let bbb = document.getElementById('chartOutBox').offsetHeight;
+        self.chartOption.boxWidth = aaa - 202;
+        self.chartOption.boxHeight = bbb;
         window.onresize = () => {
           return (() => {
-            window.screenWidth = document.body.clientWidth;
-            window.screenHeight = document.body.clientHeight;
-            self.screenWidth = window.screenWidth;
-            self.screenHeight = window.screenHeight;
-
+            let aaa = document.getElementById('chartOutBox').offsetWidth;
+            let bbb = document.getElementById('chartOutBox').offsetHeight;
+            self.chartOption.boxWidth = aaa - 202;
+            self.chartOption.boxHeight = bbb;
+            self.barBox.resize();
+            self.pieBox.resize();
+            self.pieBox2.resize();
           })()
         }
-
-
-
-
-
-        /*
-        setTimeout(() => {
-            window.onresize = () => {
-              return (() => {
-
-                window.screenWidth = document.body.clientWidth;
-                window.screenHeight = document.body.clientHeight;
-                self.screenWidth = window.screenWidth;
-                self.screenHeight = window.screenHeight;
-
-                self.chartOption.boxWidth = self.screenWidth - 444;
-                self.chartOption.boxHeight = self.screenHeight - 180;
-
-                console.log(document.body.clientWidth,document.body.clientHeight);
-                console.log(self.chartOption.boxWidth,self.chartOption.boxHeight);
-                if(self.barBox  ||  self.pieBox){
-                  self.barBox.resize();
-                  self.pieBox.resize();
-                }
-              })()
-            }
-
-
-
-
-         /!* window.onresize = function () {
-            //self.$refs.echarts.resize()
-            self.chartOption.boxWidth = document.body.clientWidth - 44;
-            self.chartOption.boxHeight = document.body.clientHeight - 180;
-
-            console.log(document.body.clientWidth,document.body.clientHeight);
-            console.log(self.chartOption.boxWidth,self.chartOption.boxHeight);
-            if(self.barBox  ||  self.pieBox){
-              self.barBox.resize();
-              self.pieBox.resize();
-            }
-          }*!/
-        }, 20)*/
-
       },
-
       to_level_1(){
         const self = this;
         //self.chartOption.resule_level_1=[];
@@ -313,6 +210,7 @@
         self.searchResult.chart_result = self.chartOption.resule_level_1;
         self.chartBar(self.searchResult.chart_title,self.searchResult.chart_result);
         self.chartPie(self.searchResult.chart_title,self.searchResult.chart_result);
+        self.chartPie2(self.searchResult.chart_title,self.searchResult.chart_result);
 
       },
       to_level_2(){
@@ -343,6 +241,7 @@
         self.searchResult.chart_result = self.chartOption.resule_level_2;
         self.chartBar(self.searchResult.chart_title,self.searchResult.chart_result);
         self.chartPie(self.searchResult.chart_title,self.searchResult.chart_result);
+        self.chartPie2(self.searchResult.chart_title,self.searchResult.chart_result);
       },
       to_level_3(){
         const self = this;
@@ -371,8 +270,8 @@
         self.searchResult.chart_result = self.chartOption.resule_level_3;
         self.chartBar(self.searchResult.chart_title,self.searchResult.chart_result);
         self.chartPie(self.searchResult.chart_title,self.searchResult.chart_result);
+        self.chartPie2(self.searchResult.chart_title,self.searchResult.chart_result);
       },
-
 			//案件类型
       ajlxTJ(){
         const self = this;
@@ -406,9 +305,6 @@
       //柱状图
       chartBar(title,result){
         const self = this;
-/*        self.chartOption.boxWidth = self.screenWidth -460;
-        self.chartOption.boxHeight = self.screenHeight  - 180;*/
-
         let myData = new Map(result);
         let arr = [...myData.keys()];
         let arr2 = [...myData.values()];
@@ -419,12 +315,20 @@
               text: title,
               x:'center'
             },
-            toolbox: {
+            tooltip: {
               show: true,
               trigger: 'axis',
               axisPointer: {
                 type: 'shadow'
               }
+            },
+
+            grid: {
+            	top:'20%',
+              left: '3%',
+              right: '4%',
+              bottom: '3%',
+              containLabel: true
             },
             xAxis: {
               data: arr,
@@ -436,6 +340,17 @@
             yAxis: {},
             series: [{
               type: 'bar',
+              itemStyle: {
+                normal: {
+                  // 随机显示
+                  //color:function(d){return "#"+Math.floor(Math.random()*(256*256*256-1)).toString(16);}
+                  // 定制显示（按顺序）
+                  color: function(params) {
+                    var colorList = ['#c23531','#2f4554', '#61a0a8', '#d48265', '#91c7ae','#749f83',  '#ca8622', '#bda29a','#6e7074', '#546570', '#c4ccd3'];
+                    return colorList[params.dataIndex]
+                  }
+                },
+              },
               data: arr2
             }]
           };
@@ -456,7 +371,6 @@
         }
       },
       //饼状图
-
       chartPie(title,result){
         const self = this;
         let myData = new Map(result);
@@ -476,6 +390,10 @@
               text: title,
               x:'center'
             },
+            tooltip : {
+              trigger: 'item',
+              formatter: "{a}<br>{b} : {c} ({d}%)"
+            },
             legend: {
               orient: 'vertical',
               left: 'left',
@@ -483,6 +401,7 @@
             },
             series : [
               {
+              	name:title,
                 type: 'pie',
                 radius : '55%',
                 center: ['50%', '60%'],
@@ -504,28 +423,131 @@
             title : {
               text: self.searchResult.chart_title,
             },
+
+            legend: {
+              orient: 'vertical',
+              left: 'left',
+              data: arr
+            },
             series: [{
+              name:title,
               data: pieData
             }]
           });
         }
       },
+      //非对称饼状图
+      chartPie2(title,result){
+
+        console.log(1111);
+        const self = this;
+        let myData = new Map(result);
+        let arr = [...myData.keys()];
+        let arr2 = [...myData.values()];
+        let pieData=[];
+        for(var i = 0; i < arr.length; i++){
+          pieData.push({
+            name: arr[i],
+            value: arr2[i]
+          });
+        }
+        if(!self.pieBox2){
+          self.pieBox2 = echarts.init(document.getElementById('chartPie2'));
+          let option_pie = {
+            title : {
+              text: title,
+              x:'center'
+            },
+            tooltip : {
+              trigger: 'item',
+              formatter: "{a}<br>{b} : {c} ({d}%)"
+            },
+            legend: {
+              orient: 'vertical',
+              left: 'left',
+              data: arr
+            },
+            series : [
+              {
+                name:title,
+                type: 'pie',
+                radius : '55%',
+                center: ['50%', '60%'],
+                data:pieData.sort(function (a, b) { return a.value - b.value; }),
+                selectedMode: 'single',
+                itemStyle: {
+                  emphasis: {
+                    shadowBlur: 10,
+                    shadowOffsetX: 0,
+                    shadowColor: 'rgba(0, 0, 0, 0.5)'
+                  }
+                },
+                roseType: 'radius',
+                animationType: 'scale',
+                animationEasing: 'elasticOut',
+                animationDelay: function (idx) {
+                  return Math.random() * 200;
+                }
+              }
+            ]
+          };
+          this.pieBox2.setOption(option_pie,true);
+        }else{
+
+          console.log(2222);
+          self.pieBox2.setOption({
+            title : {
+              text: self.searchResult.chart_title,
+            },
+
+            legend: {
+              orient: 'vertical',
+              left: 'left',
+              data: arr
+            },
+            series: [{
+              name:title,
+              data: pieData.sort(function (a, b) { return a.value - b.value; }),
+              roseType: 'radius',
+              animationType: 'scale',
+              animationEasing: 'elasticOut',
+              animationDelay: function (idx) {
+                return Math.random() * 200;
+              }
+            }]
+          });
+        }
+      },
+
+
+
       showChart(val){
         const self = this;
         if(val == "bar"){
-          self.showBar = true;
-          self.showPie = false;
+          /*self.showBar = true;
+          self.showPie = false;*/
+          self.chartOption.barZindex = 1;
+          self.chartOption.pieZindex = 0;
+          self.chartOption.pie2Zindex = 0;
+
         }else if (val == "pie"){
-          self.showBar = false;
-          self.showPie = true;
+          /*self.showBar = false;
+          self.showPie = true;*/
+          self.chartOption.barZindex = 0;
+          self.chartOption.pieZindex = 1;
+          self.chartOption.pie2Zindex = 0;
+        }else if(val == "noPie"){
+          self.chartOption.barZindex = 0;
+          self.chartOption.pieZindex = 0;
+          self.chartOption.pie2Zindex = 1;
+
         }
+
       },
       searchType(){
         const self = this;
         self.chartOption.loading2=true;
         //ajlx  ajxz xzfl xzxl
-
-
         delete self.USearch.ajlx;
         delete self.USearch.ajxz;
         delete self.USearch.xzfl;
@@ -561,6 +583,7 @@
           self.searchResult.chart_result = self.chartOption.resule_level_1;
           self.chartBar(self.searchResult.chart_title,self.searchResult.chart_result);
           self.chartPie(self.searchResult.chart_title,self.searchResult.chart_result);
+          self.chartPie2(self.searchResult.chart_title,self.searchResult.chart_result);
 
 /*          self.chartBar(self.chartOption.level_1_title,self.chartOption.resule_level_1);
           self.chartPie(self.chartOption.level_1_title,self.chartOption.resule_level_1);*/
@@ -608,6 +631,7 @@
             self.searchResult.chart_result = self.chartOption.resule_level_2;
             self.chartBar(self.searchResult.chart_title,self.searchResult.chart_result);
             self.chartPie(self.searchResult.chart_title,self.searchResult.chart_result);
+            self.chartPie2(self.searchResult.chart_title,self.searchResult.chart_result);
           }
           self.chartOption.loading2=false;
         }, (response) => {
@@ -651,6 +675,7 @@
             self.searchResult.chart_result = self.chartOption.resule_level_3;
             self.chartBar(self.searchResult.chart_title,self.searchResult.chart_result);
             self.chartPie(self.searchResult.chart_title,self.searchResult.chart_result);
+            self.chartPie2(self.searchResult.chart_title,self.searchResult.chart_result);
 
           }
 
@@ -695,6 +720,7 @@
             self.searchResult.chart_result = self.chartOption.resule_level_4;
             self.chartBar(self.searchResult.chart_title,self.searchResult.chart_result);
             self.chartPie(self.searchResult.chart_title,self.searchResult.chart_result);
+            self.chartPie2(self.searchResult.chart_title,self.searchResult.chart_result);
           }
 
           self.chartOption.loading2=false;
@@ -705,72 +731,6 @@
     },
     watch: {
 
-      screenWidth (val) {
-        if (!this.timer) {
-          this.screenWidth = val;
-          this.timer = true;
-          const self = this;
-          setTimeout(function () {
-
-/*            self.screenWidth = window.screenWidth;
-            self.screenHeight = window.screenHeight;*/
-            console.log(self.screenWidth, self.screenHeight );
-            self.chartOption.boxWidth = self.screenWidth -440;
-            self.timer = false;
-            self.$refs.chartBar.resize();
-            self.$refs.chartPie.resize()
-/*            self.barBox.resize();
-            self.pieBox.resize();*/
-          }, 400)
-        }
-      },
-//      self.screenHeight = window.screenHeight;
-
-
-
-/*
-      screenWidth (val) {
-        if (!this.timer) {
-          this.screenWidth = val
-          this.timer = true
-          const self = this;
-          setTimeout(function () {
-            self.chartOption.boxWidth = window.screenWidth -460;
-            self.timer = false;
-            self.barBox.resize();
-            self.pieBox.resize();
-          }, 400)
-        }
-      },
-//      self.screenHeight = window.screenHeight;
-  /!*    setTimeout(function () {
-        // self.screenWidth = self.$store.state.canvasWidth
-        //self.init()
-        self.chartOption.boxWidth = self.screenWidth -460;
-        self.chartOption.boxHeight = self.screenHeight  - 180;
-        console.log(self.chartOption.boxWidth,self.chartOption.boxHeight);
-        self.timer2 = false;
-        self.barBox.resize();
-        self.pieBox.resize();
-      }, 400)*!/
-      screenHeight (val) {
-        console.log(val);
-        if (!this.timer2) {
-          this.screenHeight = val
-          this.timer2 = true
-          const self = this;
-          setTimeout(function () {
-            // self.screenWidth = self.$store.state.canvasWidth
-            //self.init()
-            self.chartOption.boxHeight = window.screenHeight - 180;
-            console.log(self.screenHeight,self.chartOption.boxHeight);
-            self.timer2 = false;
-            self.barBox.resize();
-            self.pieBox.resize();
-          }, 400)
-        }
-      }
-*/
 
     }
 	}
@@ -785,7 +745,7 @@
   #chartBar{}
   #chartPie{}
   .chartOutBox{display: flex;flex-wrap: nowrap; height: calc(100% - 80px); background: rgba(255,255,255,0.8);border: 1px solid rgba(0,0,0,.2);}
-  .chartOption{background:rgba(0,0,0,.0); width: 200px; position: relative; overflow: hidden;border-right: 1px solid rgba(0,0,0,.2);flex-grow: 0;}
+  .chartOption{background:rgba(0,0,0,.0); width: 200px; height:100%;  position: relative; overflow: hidden;border-right: 1px solid rgba(0,0,0,.2);flex-grow: 0;}
   .chartBox{flex-grow: 1;}
   .chartOption-dl{ position: absolute; width: 200px;top: 0;transition: all .5s;}
   .chartOption-dl2{ left: 100%;}
@@ -799,7 +759,8 @@
   .chartOption-dl.left-in{ left:0%;}
   .chartOption-dl.right-out{left: 100%;}
   .chartOption-dl.right-in{left: 0px;}
-  .chartBox{}
+  .chartBox{ position: relative;}
+  .chartBL{ position: absolute; left: 0; top:0; width: 100%; height: 100%; background: rgba(255,255,255,1); }
   .mianBaoBox{display: flex; padding: 8px 5px 5px;}
   .mianBaoBox i{  margin-top: 3px;}
   .mianBao{display: flex; margin-left: 0; padding-left: 0; margin: 0;}
