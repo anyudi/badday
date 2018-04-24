@@ -11,7 +11,7 @@
       <el-button type="primary" @click="searchType">搜索</el-button>
       <el-button type="success" @click="showChart('bar')" >柱状图</el-button>
       <el-button type="success" @click="showChart('pie')">饼状图</el-button>
-      <el-button type="success" @click="showChart('noPie')">非对称饼状图</el-button>
+      <el-button type="success" @click="showChart('noPie')">非对称饼状图玫瑰图</el-button>
       <div class="mianBaoBox">
 
         <i class="fas fa-home"></i>
