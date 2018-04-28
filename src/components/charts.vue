@@ -181,52 +181,68 @@
           })()
         }
       },
+      
+      showError() {
+        this.$message({
+          showClose: true,
+          message: '时间不能为空~~',
+          type: 'error'
+        });
+      },
       searchType(){
         const self = this;
-        self.chartOption.loading2=true;
-        //ajlx  ajxz xzfl xzxl
-        delete self.USearch.ajlx;
-        delete self.USearch.ajxz;
-        delete self.USearch.xzfl;
-        self.barBox = null;
-        self.pieBox = null;
-        /*self.chartOption.boxWidth =  document.getElementById("chartBar").offsetWidth;
-         self.chartOption.boxHeight =  document.getElementById("chartBar").offsetHeight;*/
-        self.$http.post('http://39.104.113.229:8761/count/findJcjbCountByCol/ajlx/',self.USearch).then((response) => {
-          console.log('success');
-          var result =response.body;
-          self.chartOption.resule_level_1=[];
-          self.chartOption.resule_level_2=[];
-          self.chartOption.resule_level_3=[];
-          self.chartOption.resule_level_4=[];
-          self.chartOption.level_1="left-in";
-          self.chartOption.level_2="";
-          self.chartOption.level_3="";
-          self.chartOption.level_4="";
-          self.chartOption.level_2_title="";
-          self.chartOption.level_3_title="";
-          self.chartOption.level_4_title="";
-          
-          self.chartOption.link_level_1="";
-          self.chartOption.LX_level_2=false;
-          self.chartOption.link_level_2="";
-          self.chartOption.LX_level_3=false;
-          self.chartOption.link_level_3="";
-          self.chartOption.LX_level_4=false;
-          self.chartOption.resule_level_1 = result;
-          
-          self.searchResult.chart_title = self.chartOption.level_1_title;
-          self.searchResult.chart_result = [];
-          self.searchResult.chart_result = self.chartOption.resule_level_1;
-          self.loadChart(self.searchResult.chart_title,self.searchResult.chart_result);
-          /*          self.chartBar(self.chartOption.level_1_title,self.chartOption.resule_level_1);
-           self.chartPie(self.chartOption.level_1_title,self.chartOption.resule_level_1);*/
-          
-          
-          self.chartOption.loading2=false;
-        }, (response) => {
-          console.log('error');
-        });
+        if(this.USearch.bjsjStart=='' || this.USearch.bjsjEnd==''){
+          self.showError();
+        }else{
+        	self.chartOption.loading2=true;
+          //ajlx  ajxz xzfl xzxl
+          delete self.USearch.ajlx;
+          delete self.USearch.ajxz;
+          delete self.USearch.xzfl;
+          self.barBox = null;
+          self.pieBox = null;
+          self.pieBox2 = null;
+          /*self.chartOption.boxWidth =  document.getElementById("chartBar").offsetWidth;
+           self.chartOption.boxHeight =  document.getElementById("chartBar").offsetHeight;*/
+          self.$http.post('http://39.104.113.229:8761/count/findJcjbCountByCol/ajlx/',self.USearch).then((response) => {
+            console.log('success');
+            var result =response.body;
+  
+            console.log(result);
+            self.chartOption.resule_level_1=[];
+            self.chartOption.resule_level_2=[];
+            self.chartOption.resule_level_3=[];
+            self.chartOption.resule_level_4=[];
+            self.chartOption.level_1="left-in";
+            self.chartOption.level_2="";
+            self.chartOption.level_3="";
+            self.chartOption.level_4="";
+            self.chartOption.level_2_title="";
+            self.chartOption.level_3_title="";
+            self.chartOption.level_4_title="";
+    
+            self.chartOption.link_level_1="";
+            self.chartOption.LX_level_2=false;
+            self.chartOption.link_level_2="";
+            self.chartOption.LX_level_3=false;
+            self.chartOption.link_level_3="";
+            self.chartOption.LX_level_4=false;
+            self.chartOption.resule_level_1 = result;
+    
+            self.searchResult.chart_title = self.chartOption.level_1_title;
+            self.searchResult.chart_result = [];
+            self.searchResult.chart_result = self.chartOption.resule_level_1;
+            self.loadChart(self.searchResult.chart_title,self.searchResult.chart_result);
+            /*          self.chartBar(self.chartOption.level_1_title,self.chartOption.resule_level_1);
+             self.chartPie(self.chartOption.level_1_title,self.chartOption.resule_level_1);*/
+    
+    
+            self.chartOption.loading2=false;
+          }, (response) => {
+            console.log('error');
+          });
+        }
+
       },
       to_level_1(){
         const self = this;
@@ -350,7 +366,7 @@
             name: arr[i],
             value: arr2[i]
           });
-        };
+        }
         //柱状图
         if(!self.barBox){
           self.barBox = echarts.init(document.getElementById('chartBar'));
@@ -411,7 +427,7 @@
               data: arr2
             }]
           });
-        };
+        }
         //饼状图
         if(!self.pieBox){
           self.pieBox = echarts.init(document.getElementById('chartPie'));

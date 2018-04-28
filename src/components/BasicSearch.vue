@@ -375,24 +375,28 @@
       searchData(){
         const self = this;
         //console.log(self.USearch);
-        self.loading = true;
-        self.$http.post('http://39.104.113.229:8761/jcjb/findPagerByJcjb/'+ self.currentPage + "/" + self.pageSize,self.USearch).then((response) => {
-          console.log('success');
-          var result =response.body;
-          self.searchResult =[];
-          self.searchResult = result.content;
-          console.log(self.searchResult)
-          self.total = result.totalElements;
-          self.totalPages = result.totalPages;
-          self.currentPage =result.number;
-          if(self.totalPages >0){
-            self.pageState = true;
-          }
-
-          self.loading = false;
-        }, (response) => {
-          console.log('error');
-        });
+        if(this.USearch.bjsjStart=='' || this.USearch.bjsjEnd==''){
+          self.showError();
+        }else{
+          self.loading = true;
+          self.$http.post('http://39.104.113.229:8761/jcjb/findPagerByJcjb/'+ self.currentPage + "/" + self.pageSize,self.USearch).then((response) => {
+            console.log('success');
+            var result =response.body;
+            self.searchResult =[];
+            self.searchResult = result.content;
+            console.log(self.searchResult);
+            self.total = result.totalElements;
+            self.totalPages = result.totalPages;
+            self.currentPage =result.number;
+            if(self.totalPages >0){
+              self.pageState = true;
+            }
+    
+            self.loading = false;
+          }, (response) => {
+            console.log('error');
+          });
+        }
       },
       //日期
       getStart(val){
@@ -583,7 +587,14 @@
         }
         return moment(date).format("YYYY-MM-DD HH:mm:ss");
       },
-
+  
+      showError() {
+        this.$message({
+          showClose: true,
+          message: '时间不能为空~~',
+          type: 'error'
+        });
+      },
 
       //导出word
 

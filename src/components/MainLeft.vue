@@ -23,12 +23,24 @@
         menus:[
           {title:'基本查询',iClass:"fas fa-search",pathTo:'BasicSearch',guess:true},
           {title:'日历统计',iClass:"far fa-hand-peace",pathTo:'typeSearch',guess:false},
-          {title:'图表',iClass:'fas fa-chart-pie',pathTo:'charts',guess:false},
+          {title:'报警号码',iClass:"far fa-hand-peace",pathTo:'bjhm',guess:false},
+          {title:'呼叫状态',iClass:"far fa-hand-peace",pathTo:'hjzt',guess:false},
+          {title:'基本查询图表',iClass:'fas fa-chart-pie',pathTo:'charts',guess:false},
+          {title:'混合图表',iClass:"far fa-hand-peace",pathTo:'chartHH',guess:false},
+          {title:'呼叫状态图表',iClass:"far fa-hand-peace",pathTo:'hjztChart',guess:false},
+          {title:'值班员',iClass:"far fa-hand-peace",pathTo:'zby',guess:false},
+          {title:'值班员图表',iClass:"far fa-hand-peace",pathTo:'zbyChart',guess:false},
+          {title:'所属辖区',iClass:"far fa-hand-peace",pathTo:'ssxq',guess:false},
+          {title:'所属辖区图表',iClass:"far fa-hand-peace",pathTo:'ssxqChart',guess:false},
+          
+              ///ssxqChart
+  /*
+   {title:'二十四小时',iClass:"far fa-hand-peace",pathTo:'shiduanchaxun',guess:false},
           {title:'动态警情对比',iClass:"far fa-hand-peace",pathTo:'typeSearch',guess:false},
           {title:'动态警情对比',iClass:"far fa-hand-peace",pathTo:'',guess:false},
           {title:'每日治安动态',iClass:"far fa-hand-peace",pathTo:'',guess:false},
           {title:'智能预警',iClass:"far fa-hand-peace",pathTo:'',guess:false},
-          {title:'系统维护',iClass:"far fa-hand-peace",pathTo:'',guess:false},
+          {title:'系统维护',iClass:"far fa-hand-peace",pathTo:'',guess:false},*/
           
 
 

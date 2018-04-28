@@ -37,7 +37,7 @@
 		props: {},
 		data(){
 			return {
-        sysTitle:"OOXXOO系统",
+        sysTitle:"警情在线分析处理",
         user:'admin',
         password:'admin',
         userData:''
