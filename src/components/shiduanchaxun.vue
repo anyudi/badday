@@ -96,7 +96,7 @@
         }else{
           self.loading = true;
           console.log(self.USearch);
-          self.$http.post('http://39.104.113.229:8761/count/findJcjbCountsByTimeScope/ajlx', self.USearch).then((response) => {
+          self.$http.post(serverRouter.server17, self.USearch).then((response) => {
             console.log('success');
             var result = response.body;
             self.searchResult = [];

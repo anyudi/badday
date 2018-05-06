@@ -6,14 +6,12 @@
 --->
 <template lang="html">
     <div id='charts' class="charts">
-
       <el-date-picker v-model="timeSlot" type="datetimerange" :picker-options="pickerOptions" range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期" align="right" @change="getMyTime" unlink-panels value-format="yyyy-MM-dd hh:mm:ss" ></el-date-picker>
       <el-button type="primary" @click="searchType">搜索</el-button>
       <el-button type="success" @click="showChart('bar')" >柱状图</el-button>
       <el-button type="success" @click="showChart('pie')">饼状图</el-button>
       <el-button type="success" @click="showChart('noPie')">非对称饼状图玫</el-button>
       <div class="mianBaoBox">
-
         <i class="fas fa-home"></i>
         <ul class="mianBao">
           <li v-if="chartOption.LX_level_1" :class="chartOption.link_level_1" @click="to_level_1">案件类型</li>
@@ -204,7 +202,7 @@
           self.pieBox2 = null;
           /*self.chartOption.boxWidth =  document.getElementById("chartBar").offsetWidth;
            self.chartOption.boxHeight =  document.getElementById("chartBar").offsetHeight;*/
-          self.$http.post('http://39.104.113.229:8761/count/findJcjbCountByCol/ajlx/',self.USearch).then((response) => {
+          self.$http.post(serverRouter.server10,self.USearch).then((response) => {
             console.log('success');
             var result =response.body;
   
@@ -327,7 +325,7 @@
 			//案件类型
       ajlxTJ(){
         const self = this;
-        self.$http.post('http://39.104.113.229:8761/count/findJcjbCountByCol/ajlx/',self.USearch).then((response) => {
+        self.$http.post(serverRouter.server09,self.USearch).then((response) => {
           console.log('success');
           var result =response.body;
           self.searchResult = result;
@@ -580,7 +578,7 @@
         delete self.USearch.xzfl;
         self.chartOption.loading2=true;
         self.USearch.ajlx = val;
-        self.$http.post('http://39.104.113.229:8761/count/findJcjbCountByCol/ajxz/',self.USearch).then((response) => {
+        self.$http.post(serverRouter.server11,self.USearch).then((response) => {
           console.log('success');
           var result =response.body;
           self.chartOption.resule_level_2=[];
@@ -623,7 +621,7 @@
         delete self.USearch.xzfl;
         self.chartOption.loading2=true;
         self.USearch.ajxz = val;
-        self.$http.post('http://39.104.113.229:8761/count/findJcjbCountByCol/xzfl/',self.USearch).then((response) => {
+        self.$http.post(serverRouter.server12,self.USearch).then((response) => {
           console.log('success');
           var result =response.body;
           if(result=="" || result==null){
@@ -666,7 +664,7 @@
         delete self.USearch.xzfl;
         self.chartOption.loading2=true;
         self.USearch.xzfl = val;
-        self.$http.post('http://39.104.113.229:8761/count/findJcjbCountByCol/xzxl/',self.USearch).then((response) => {
+        self.$http.post(serverRouter.server13,self.USearch).then((response) => {
           console.log('success');
           var result =response.body;
 

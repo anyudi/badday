@@ -94,7 +94,7 @@
         }else{
           console.log(self.USearch);
           self.loading = true;
-          self.$http.post('http://39.104.113.229:8761/hjjlb/findLdsjBetweenGroupByHjzt', self.USearch).then((response) => {
+          self.$http.post(serverRouter.server14, self.USearch).then((response) => {
             console.log('success');
             var result = response.body;
             self.searchResult = [];

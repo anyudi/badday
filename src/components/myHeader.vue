@@ -6,7 +6,7 @@
 --->
 <template lang="html">
   <div id="myHeader" class="myHeader">
-    <div class="logo"><a href="http://39.104.113.229:8761/swagger-ui.html#!/ajb-controller/findAjlxUsingGET" target="_blank">{{logo}}</a></div>
+    <div class="logo"><a href="http://47.98.172.119:8761/swagger-ui.html#!/ajb-controller/findAjlxUsingGET" target="_blank">{{logo}}</a></div>
     <ul class="topMunu">
       <li>测试</li>
       <li>测试</li>

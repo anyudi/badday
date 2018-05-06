@@ -11,6 +11,10 @@
       <el-button type="primary" @click="bjhmSearch">搜索</el-button>
     </el-form>
 		<div></div>
+    <el-table :data="searchResult" border style="width: 100%" v-loading="loading" class="table-small-padding noPrint LS">
+      <el-table-column prop="name"  label="类型"></el-table-column>
+      <el-table-column prop="countNum" label="数量"></el-table-column>
+    </el-table>
 	</div>
 </template>
 <script>
@@ -87,6 +91,7 @@
           ],
           
         },
+        loading: false,
 			}
 		},
 		//这个是钩子函数
@@ -114,7 +119,7 @@
           self.showError();
         }else{
           console.log(self.USearch);
-          self.$http.post('http://39.104.113.229:8761/hjjlb/findLdsjBetweenGroupByBjhm', self.USearch).then((response) => {
+          self.$http.post(serverRouter.server08, self.USearch).then((response) => {
             console.log('success');
             var result = response.body;
             self.searchResult = [];

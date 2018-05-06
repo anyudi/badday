@@ -107,7 +107,7 @@
           self.showError();
         }else{
           self.loading = true;
-          self.$http.post('http://39.104.113.229:8761/count/findJcjbCountByCol/ssxq',self.USearch).then((response) => {
+          self.$http.post(serverRouter.server16,self.USearch).then((response) => {
             let LS = response.body;
             for(var Znum =0;Znum<LS.length;Znum++ ){
               let obj={};

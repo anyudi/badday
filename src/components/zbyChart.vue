@@ -104,7 +104,7 @@
           self.showError();
         }else{
           self.loading = true;
-          self.$http.post('http://39.104.113.229:8761/count/findJcjbCountByCol/zby',self.USearch).then((response) => {
+          self.$http.post(serverRouter.server15,self.USearch).then((response) => {
             let LS = response.body;
             self.searchResult=response.body;
             self.loadChart("值班员图表",self.searchResult);

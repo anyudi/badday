@@ -100,13 +100,14 @@
           type: 'error'
         });
       },
+      //hjztSearch
       hjztSearch(){
         const self = this;
         if(this.USearch.ldsjStart=='' || this.USearch.ldsjEnd==''){
           self.showError();
         }else{
           self.loading = true;
-          self.$http.post('http://39.104.113.229:8761/hjjlb/findLdsjBetweenGroupByHjzt', self.USearch).then((response) => {
+          self.$http.post(serverRouter.server14, self.USearch).then((response) => {
             console.log('success');
             var result = response.body;
             self.searchResult = [];
@@ -324,26 +325,6 @@
                 return Math.random() * 200;
               }
             }]
-          });
-        }
-      },
-  //hjztSearch
-      searchType(){
-        const self = this;
-        if (this.USearch.bjsjStart == '' || this.USearch.bjsjEnd == '') {
-          self.showError();
-        } else {
-          self.loading = true;
-          self.$http.post('http://39.104.113.229:8761/hjjlb/findLdsjBetweenGroupByHjzt', self.USearch).then((response) => {
-            console.log('success');
-            var result = response.body;
-            self.searchResult = [];
-            self.searchResult = result;
-            self.loadChart("呼叫状态统计",self.searchResult);
-            
-            self.loading = false;
-          }, (response) => {
-            console.log('error');
           });
         }
       },

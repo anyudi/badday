@@ -8,10 +8,10 @@
 <template lang="html">
     <div id='login' class="login">
 
-      <form @submit="addUser" style="display: none;">
+      <!--<form @submit="addUser" style="display: none;">
         file:///I:/%E6%96%B0%E5%BB%BA%E6%96%87%E4%BB%B6%E5%A4%B92/%E7%89%9B%E9%80%BC%E7%9A%84%E4%BA%A4%E4%BA%92/27%E6%AC%BE%E5%90%8E%E5%8F%B0%E7%AE%A1%E7%90%86%E9%A1%B5%E9%9D%A2%E8%AE%BE%E8%AE%A1%20DIV+CSS/26/admin-templates/login.html
 
-      </form>
+      </form>-->
 
       <div class="login-box">
         <div class="logo"></div>
@@ -32,6 +32,7 @@
     </div>
 </template>
 <script>
+ 
 	export default {
 		name: 'login',
 		props: {},
@@ -56,7 +57,8 @@
       addUser() {
         //e.preventDefault();
         //console.log('http://61.163.254.186:8761/zbyxxb/' + this.user + '/' + this.password);
-        this.$http.get('http://39.104.113.229:8761/zbyxxb/'+this.user + '/' + this.password).then((response) => {
+        console.log(serverRouter);
+        this.$http.get(serverRouter.server01+this.user + '/' + this.password).then((response) => {
           console.log('success');
           console.log(response);
           this.userData = response.body;

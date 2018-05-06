@@ -356,7 +356,7 @@
     mounted: function() {
       //案件类型
       const self = this;
-      self.$http.get('http://39.104.113.229:8761/ajb/findAjlx').then((response) => {
+      self.$http.get(serverRouter.server02).then((response) => {
         console.log('success');
         let result =response.body;
         self.ajlxItems = [];
@@ -379,7 +379,7 @@
           self.showError();
         }else{
           self.loading = true;
-          self.$http.post('http://39.104.113.229:8761/jcjb/findPagerByJcjb/'+ self.currentPage + "/" + self.pageSize,self.USearch).then((response) => {
+          self.$http.post(serverRouter.server06+ self.currentPage + "/" + self.pageSize,self.USearch).then((response) => {
             console.log('success');
             var result =response.body;
             self.searchResult =[];
@@ -431,7 +431,7 @@
         const self=this;
         self.loading = true;
         self.currentPage = val;
-        self.$http.post('http://39.104.113.229:8761/jcjb/findPagerByJcjb/'+ self.currentPage + "/" + self.pageSize,self.USearch).then((response) =>{
+        self.$http.post(serverRouter.server06 + self.currentPage + "/" + self.pageSize,self.USearch).then((response) =>{
           console.log('success');
           var result =response.body;
           self.searchResult =[];
@@ -454,7 +454,7 @@
         const self = this;
         self.pageSize = val;
         self.loading = true;
-        self.$http.post('http://39.104.113.229:8761/jcjb/findPagerByJcjb/'+ self.currentPage + "/" + self.pageSize,self.USearch).then((response) => {
+        self.$http.post(serverRouter.server06 + self.currentPage + "/" + self.pageSize,self.USearch).then((response) => {
           console.log('success');
           let result =response.body;
           self.searchResult =[];
@@ -480,7 +480,7 @@
         self.dialogTableVisible = true;
         self.wordDownload='';
 
-        self.$http.get('http://39.104.113.229:8761/jcjb/findJcjbByJjh2Word/'+self.detailed.jjh).then((response) => {
+        self.$http.get(serverRouter.server07+self.detailed.jjh).then((response) => {
           console.log('success');
           self.wordDownload=response.body;
 
@@ -524,7 +524,7 @@
       //案件性质
       findajxz(val){
         const self = this;
-        self.$http.get('http://39.104.113.229:8761/ajb/findByAjlx/' + val).then((response) => {
+        self.$http.get(serverRouter.server03 + val).then((response) => {
           console.log('success');
           let result =response.body;
 
@@ -544,7 +544,7 @@
       //性质分类
       findxzfl(val){
         const self = this;
-        self.$http.get('http://39.104.113.229:8761/ajb/findByAjlxAndAjxz/'+ self.USearch.ajlx + '/' + val ).then((response) => {
+        self.$http.get(serverRouter.server04+ self.USearch.ajlx + '/' + val ).then((response) => {
           console.log('success');
           let result =response.body;
           console.log(result);
@@ -562,7 +562,7 @@
       //性质细类
       findxzxl(val){
         const self = this;
-        self.$http.get('http://39.104.113.229:8761/ajb/findByAjlxAndAjxzAndXzfl/'+ self.USearch.ajlx+ '/' + self.USearch.ajxz+ '/' + val + '').then((response) => {
+        self.$http.get(serverRouter.server05+ self.USearch.ajlx+ '/' + self.USearch.ajxz+ '/' + val + '').then((response) => {
           console.log('success');
           let result =response.body;
           console.log(result);
